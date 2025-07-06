@@ -1,0 +1,21 @@
+services:
+  api:
+    # Define o serviço para a aplicação API.
+    image: alura-aula-2  # Nome da imagem Docker para o serviço. Se não existir localmente, Docker Compose tentará construí-la.
+    build:
+      # Especifica o contexto de construção da imagem.
+      context: .  # O diretório atual (.) será usado como contexto. Docker Compose procurará por um Dockerfile neste diretório.
+    ports:
+      # Mapeia a porta 8000 do contêiner para a porta 8000 do host.
+      # Isso permite que a aplicação seja acessada no navegador ou por outras ferramentas na porta 8000 do host.
+      - "8000:8000"
+    volumes:
+      # Monta o diretório atual (.) no diretório /app dentro do contêiner.
+      # Quaisquer mudanças feitas no código local serão refletidas no contêiner em tempo real (útil para desenvolvimento).
+      - .:/app
+    command: uvicorn app:app --reload --host 0.0.0.0 --port 8000  # Comando para iniciar a aplicação.
+      # uvicorn: Servidor ASGI para executar aplicações Python assíncronas (como FastAPI).
+      # app:app:  Especifica o módulo (app.py) e o objeto (app) que representam a aplicação FastAPI.
+      # --reload:  Habilita o hot-reloading. O servidor reinicia automaticamente quando o código é alterado (apenas para desenvolvimento).
+      # --host 0.0.0.0:  Escuta em todos os endereços IP disponíveis (necessário para acessar a aplicação de fora do contêiner).
+      # --port 8000:  Aplicação escutará na porta 8000.
